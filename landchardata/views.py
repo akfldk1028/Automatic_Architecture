@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from django.contrib.gis.admin import GeoModelAdmin
 
-# Create your views here.
+
+from django.views import View
+
+
+class MySpatial(View):
+    # Your view logic here
+    pass

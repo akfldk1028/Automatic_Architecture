@@ -31,7 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "django.contrib.gis",
+]
 
 CUSTOMAPPS = ["landchardata.apps.LandchardataConfig"]
 
@@ -49,6 +51,18 @@ SYSTEM_APPS = [
 
 INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOMAPPS
 
+if os.name == "nt":
+    VIRTUAL_ENV_BASE = os.environ["VIRTUAL_ENV"]
+    os.environ["PATH"] = (
+        os.path.join(VIRTUAL_ENV_BASE, r".\Lib\site-packages\osgeo")
+        + ";"
+        + os.environ["PATH"]
+    )
+    os.environ["PROJ_LIB"] = (
+        os.path.join(VIRTUAL_ENV_BASE, r".\Lib\site-packages\osgeo\data\proj")
+        + ";"
+        + os.environ["PATH"]
+    )
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -93,7 +107,7 @@ WSGI_APPLICATION = "automatic_architecture.wsgi.application"
 # }
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": env("DB_NAME"),
         "USER": env("DB_USER"),
         "PASSWORD": env("DB_PASSWORD"),
